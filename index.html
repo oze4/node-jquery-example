@@ -24,24 +24,32 @@
          */
         $("#search-params").on('click', () => {
             let teacherId = $("#input").val();
-            let url = "/teachers/params/" + teacherId;
-            $.ajax({
-                url: url,
-                success: function (data) {
-                    let results = "Unable to locate that teacher :( Try one of the following numbers 0, 1, 2, 3, 4, 5"; // Default 'results' response
-                    if (data !== "") {
-                        results = JSON.stringify(data, null, 2);
+            if (teacherId) {
+                let url = "/teachers/params/" + teacherId;
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    success: function (data) {
+                        let results = "Unable to locate that teacher :( Try one of the following numbers 0, 1, 2, 3, 4, 5"; // Default 'results' response
+                        if (data !== "") {
+                            results = JSON.stringify(data, null, 2);
+                        }
+                        $("#results").html(results);
+                    },
+                    error: function (err) {
+                        $("#results").html("");
+                        $("#errors").html(err);
+                        setTimeout(() => { // clear error after 6 seconds
+                            $("#errors").html("");
+                        }, 6000);
                     }
-                    $("#results").html(results);
-                },
-                error: function (err) {
-                    $("#results").html("");
-                    $("#errors").html(err);
-                    setTimeout(() => { // clear error after 6 seconds
-                        $("#errors").html("");
-                    }, 6000);
-                }
-            })
+                })
+            } else {
+                $("#errors").html("Please enter an ID!");
+                setTimeout(() => { // clear error after 6 seconds
+                    $("#errors").html("");
+                }, 6000);
+            }
         });
 
         /**
@@ -49,24 +57,32 @@
          */
         $("#search-querystring").on('click', () => {
             let teacherId = $("#input").val();
-            let url = "/teachers/query?namesearch=" + teacherId;
-            $.ajax({
-                url: url,
-                success: function (data) {
-                    let results = "Unable to locate that teacher :( Try one of the following numbers 0, 1, 2, 3, 4, 5"; // Default 'results' response
-                    if (data !== "") {
-                        results = JSON.stringify(data, null, 2);
+            if (teacherId) {
+                let url = "/teachers/query?namesearch=" + teacherId;
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    success: function (data) {
+                        let results = "Unable to locate that teacher :( Try one of the following numbers 0, 1, 2, 3, 4, 5"; // Default 'results' response
+                        if (data !== "") {
+                            results = JSON.stringify(data, null, 2);
+                        }
+                        $("#results").html(results);
+                    },
+                    error: function (err) {
+                        $("#results").html("");
+                        $("#errors").html(err);
+                        setTimeout(() => { // clear error after 6 seconds
+                            $("#errors").html("");
+                        }, 6000);
                     }
-                    $("#results").html(results);
-                },
-                error: function (err) {
-                    $("#results").html("");
-                    $("#errors").html(err);
-                    setTimeout(() => { // clear error after 6 seconds
-                        $("#errors").html("");
-                    }, 6000);
-                }
-            })
+                })
+            } else {
+                $("#errors").html("Please enter an ID!");
+                setTimeout(() => { // clear error after 6 seconds
+                    $("#errors").html("");
+                }, 6000);
+            }
         });
     </script>
 </body>
