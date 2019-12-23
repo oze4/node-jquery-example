@@ -8,15 +8,26 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.set('port', 8089);
 
-// Route
+// Teachers Route
 app.get('/teachers', (req, res, next) => {
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 
-// Route 
-app.get('/teachers/:str', (req, res, next) => {
+// Params Route 
+app.get('/teachers/params/:str', (req, res, next) => {
     try {
         let id = req.params.str;
+        let teacher = database.find(t => t.id === Number(id)); // Number(id) converts string to int
+        res.status(200).send(teacher);
+    } catch {
+        res.status(500).send("Unable to find that teacher.");
+    }
+});
+
+// Query String Route 
+app.get('/teachers/query', (req, res, next) => {
+    try {
+        let id = req.query.namesearch;
         let teacher = database.find(t => t.id === Number(id)); // Number(id) converts string to int
         res.status(200).send(teacher);
     } catch {
