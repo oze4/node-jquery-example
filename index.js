@@ -9,11 +9,33 @@ app.use(express.urlencoded({ extended: false }));
 app.set('port', 8089);
 
 // Teachers Route
+/**
+ * Just a note: if you are using query strings, and sending them to the same path
+ * you have to modify the logic in the 'shared' path.
+ * 
+ * This is because when you're using query strings, you don't have to specify
+ * anything in the route, like you do with params (eg: '/teachers/:str'). This
+ * is why you would have to change the logic of this if you are sending query
+ * strings to a route you are using to serve html.
+ */
 app.get('/teachers', (req, res, next) => {
     res.sendFile(path.join(__dirname + '/index.html'));
+    // If you're using query strings for this path '/teachers' you would have
+    // to have some logic like:
+    // if (req.query.namesearch !== "") {
+    //   let id = req.query.namesearch;
+         // more logic here on searching db for teacher   
+    // } else {
+         // otherwise just server html
+    //   res.sendFile(path.join(__dirname + '/index.html'));
+    // }
 });
 
 // Params Route 
+/**
+ * Instead of just making the route '/teachers/:str' I had
+ * to differentiate between routes. 
+ */
 app.get('/teachers/params/:str', (req, res, next) => {
     try {
         let id = req.params.str;
@@ -25,6 +47,11 @@ app.get('/teachers/params/:str', (req, res, next) => {
 });
 
 // Query String Route 
+/**
+ * Instead of just making the route '/teachers?namesearch=' I had
+ * to use 'teachers/query' to differentiate from the "main" route
+ * for '/teachers'. My goal was not to confuse you.
+ */
 app.get('/teachers/query', (req, res, next) => {
     try {
         let id = req.query.namesearch;
