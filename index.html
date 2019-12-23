@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Teachers</title>
+  </head>
+  <body>
+  
+    <div>
+        <pre id="errors" style="color: red;"></pre>
+        <p>Enter Teacher ID (0-5) and click search</p>
+        <input id="input" type="number" />
+        <button id="search">Search</button>
+        <pre id="results"></pre>
+    </div>
+
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js" type="text/javascript"></script>
+  <script>
+      $("#search").on('click', () => {
+        let teacherId = $("#input").val();
+        let url = "/teachers/" + teacherId;
+        $.ajax({
+            url: url,
+            success: function(data) {
+                let results = "Unable to locate that teacher :( Try one of the following numbers 0, 1, 2, 3, 4, 5"; // Default 'results' response
+                if (data !== "") {
+                    results = JSON.stringify(data, null, 2);
+                }
+                $("#results").html(results);
+            },
+            error: function(err) {
+                $("#results").html("");
+                $("#errors").html(err);
+                setTimeout(() => { // clear error after 6 seconds
+                    $("#errors").html(""); 
+                }, 6000);
+            }
+        })
+      });
+  </script>
+  </body>
+</html>
